@@ -19,15 +19,17 @@
 	<description>pomelo global payroll system</description>
 
 
-	<scm.url></scm.url>
-	<scm>
-		<url></url>
 
+	<scm>
+		<url>${scm.url}</url>
+		<developerConnection>scm:git:${scm.url}</developerConnection>
+		<connection>scm:git:${scm.url}</connection>
 	</scm>
 	<properties>
 		<revision>0.0.1-SNAPSHOT</revision>
 		<java.version>11</java.version>
 		<flatten-maven-plugin.version>1.3.0</flatten-maven-plugin.version>
+		<scm.url>git@github.com:xxno-sudo/pomelo.git</scm.url>
 
 
 		<!-- framework version -->
