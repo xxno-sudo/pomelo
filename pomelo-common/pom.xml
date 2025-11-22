@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <modules>
+        <module>pomelo-common-core</module>
+        <module>pomelo-common-util</module>
+        <module>pomelo-common-facade</module>
+        <module>pomelo-common-junit</module>
+        <module>pomelo-common-dao</module>
+        <module>pomelo-common-security</module>
+
+    </modules>
+    <parent>
+        <artifactId>pomelo-framework</artifactId>
+        <groupId>com.cuckoo.pomelo</groupId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <packaging>pom</packaging>
+    <artifactId>pomelo-common</artifactId>
+    <name>pomelo-common</name>
+    <url>https://maven.apache.org</url>
+</project>
