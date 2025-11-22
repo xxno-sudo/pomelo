@@ -1,0 +1,36 @@
+jwt:
+  secret: your-secret-key-here # 生产环境需要替换为正式密钥
+  expiration: 86400000 # token有效期24小时
+
+spring:
+  security:
+    filter:
+      dispatcher-types: REQUEST,ASYNC,ERROR
+  
+  # 数据源配置（可选，如果不配置将使用默认SQLite）
+  datasource:
+    # 这里可以配置外部数据源，如果不配置则使用内置SQLite
+    # url: jdbc:mysql://localhost:3306/pomelo_demo
+    # username: root
+    # password: password
+    # driver-class-name: com.mysql.cj.jdbc.Driver
+    
+# MyBatis配置
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.cuckoo.pomelo.demo.entity
+
+# 通用Mapper配置
+mapper:
+  mappers:
+    - io.mybatis.mapper.Mapper
+  not-empty: true
+  identity: SQLITE  # 默认使用SQLite，可以动态切换
+
+# 分页插件配置
+pagehelper:
+  helper-dialect: sqlite
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

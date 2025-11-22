@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>pomelo-common</artifactId>
+        <groupId>com.cuckoo.pomelo</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>pomelo-common-security</artifactId>
+
+    <dependencies>
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        
+        <!-- JWT支持 -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${io.jsonwebtoken.version}</version>
+        </dependency>
+        
+        <!-- 基础工具模块 -->
+        <dependency>
+            <groupId>com.cuckoo.pomelo</groupId>
+            <artifactId>pomelo-common-core</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        
+        <!-- 数据库访问 -->
+        <dependency>
+            <groupId>com.cuckoo.pomelo</groupId>
+            <artifactId>pomelo-common-dao</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
+</project>

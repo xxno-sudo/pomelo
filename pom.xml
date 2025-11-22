@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.cuckoo.pomelo</groupId>
+    <artifactId>pomelo-framework</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>pomelo-framework</name>
+    <url>https://maven.apache.org</url>
+
+    <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
+        <io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <servlet-api.version>2.5</servlet-api.version>
+
+        <!-- spring version -->
+        <!-- spring-cloud 与 spring-boot 对应关系 https://start.spring.io/actuator/info -->
+        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <spring-boot-starter-parent.version>2.7.18</spring-boot-starter-parent.version>
+
+        <mybatis.version>3.5.13</mybatis.version>
+
+        <!-- utils version-->
+        <mybatis-mapper.version>2.2.5</mybatis-mapper.version>
+        <pagehelper-spring-boot.version>1.4.7</pagehelper-spring-boot.version>
+
+        <!-- power mock -->
+        <powermock.version>2.0.9</powermock.version>
+
+        <!-- maven plugin version -->
+        <flatten-maven-plugin.version>1.2.7</flatten-maven-plugin.version>
+        <maven-help-plugin.version>3.1.0</maven-help-plugin.version>
+        <maven-deploy-plugin.version>3.0.0</maven-deploy-plugin.version>
+        <spring-boot-maven-plugin.version>2.7.8</spring-boot-maven-plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- local project info-->
+            <dependency>
+                <groupId>com.cuckoo.pomelo</groupId>
+                <artifactId>pomelo-api</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cuckoo.pomelo</groupId>
+                <artifactId>pomelo-common-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cuckoo.pomelo</groupId>
+                <artifactId>pomelo-common-facade</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cuckoo.pomelo</groupId>
+                <artifactId>pomelo-common-util</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.cuckoo.pomelo</groupId>
+                <artifactId>pomelo-common-junit</artifactId>
+                <version>${revision}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- spring -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot-starter-parent.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.3.0</version>
+            </dependency>
+
+            <!-- mybatis-->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <!-- utils -->
+            <dependency>
+                <groupId>io.mybatis</groupId>
+                <artifactId>mybatis-mapper</artifactId>
+                <version>${mybatis-mapper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.mybatis</groupId>
+                <artifactId>mybatis-service</artifactId>
+                <version>${mybatis-mapper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.mybatis</groupId>
+                <artifactId>mybatis-activerecord</artifactId>
+                <version>${mybatis-mapper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper-spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4</artifactId>
+                <version>${powermock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-api-mockito2</artifactId>
+                <version>${powermock.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <build>
+        <finalName>pomelo-framework</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-help-plugin</artifactId>
+                    <version>${maven-help-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>${flatten-maven-plugin.version}</version>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <configuration>
+                            <updatePomFile>true</updatePomFile>
+                            <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                            <pomElements>
+                                <!-- 关键配置：对所有依赖中使用的占位符进行解析和替换为具体值 -->
+                                <dependencies>resolve</dependencies>
+                            </pomElements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <inherited>true</inherited>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <modules>
+        <module>pomelo-common</module>
+        <module>pomelo-demo</module>
+    </modules>
+
+</project>

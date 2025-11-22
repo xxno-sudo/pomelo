@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomelo Settings - 数据源管理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            font-weight: 300;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .tabs {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .tab-header {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab-button {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .tab-content {
+            padding: 25px;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 1.4em;
+            color: #333;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+        }
+
+        .btn-warning {
+            background: #ed8936;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #dd6b20;
+        }
+
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+
+        .btn-secondary {
+            background: #718096;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4a5568;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .table th,
+        .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .table tr:hover {
+            background: #f8f9ff;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-enabled {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-disabled {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .status-default {
+            background: #bee3f8;
+            color: #2a4365;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.3em;
+            color: #333;
+        }
+
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-footer {
+            padding: 20px 25px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #999;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .current-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #48bb78;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        /* 查看详情模态框样式 - 统一表单风格 */
+        .form-control-view {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #f8f9fa;
+            color: #333;
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            word-break: break-all;
+        }
+
+        .form-badges {
+            margin-top: 8px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .view-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .current-badge {
+            background: #48bb78;
+        }
+
+        .default-badge {
+            background: #ed8936;
+        }
+
+        .status-badge-enabled {
+            background: #48bb78;
+        }
+
+        .status-badge-disabled {
+            background: #f56565;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .status-success .status-indicator {
+            background: #48bb78;
+        }
+
+        .status-error .status-indicator {
+            background: #f56565;
+        }
+
+        .status-unknown .status-indicator {
+            background: #718096;
+        }
+
+        .status-text {
+            font-weight: 500;
+        }
+
+        /* 动画效果 */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* 模态框动画 */
+        .modal {
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* 查看模式的表单控件悬停效果 */
+        .form-control-view:hover {
+            background-color: #f1f3f4;
+            transition: background-color 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>🍈 Pomelo Settings</h1>
+            <a href="/" class="back-btn">← 返回首页</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab-header">
+                <button class="tab-button active" onclick="switchTab('datasources')">数据源管理</button>
+                <button class="tab-button" onclick="switchTab('monitoring')">监控面板</button>
+                <button class="tab-button" onclick="switchTab('settings')">系统设置</button>
+            </div>
+
+            <div class="tab-content">
+                <!-- 数据源管理面板 -->
+                <div id="datasources" class="tab-panel active">
+                    <div class="panel-header">
+                        <h2 class="panel-title">数据源列表</h2>
+                        <button class="btn btn-primary" onclick="showAddModal()">+ 新增数据源</button>
+                    </div>
+
+                    <div id="datasourceTable">
+                        <div class="loading">加载中...</div>
+                    </div>
+                </div>
+
+                <!-- 监控面板 -->
+                <div id="monitoring" class="tab-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">系统监控</h2>
+                        <button class="btn btn-secondary" onclick="refreshMonitoring()">刷新数据</button>
+                    </div>
+                    <p>监控功能开发中...</p>
+                </div>
+
+                <!-- 系统设置 -->
+                <div id="settings" class="tab-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">系统设置</h2>
+                    </div>
+                    <p>系统设置功能开发中...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 查看数据源详情模态框 -->
+    <div id="viewDataSourceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">数据源详情</h3>
+                <span class="close" onclick="closeViewModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="viewDataSourceForm">
+                    <div class="form-group">
+                        <label class="form-label">数据源名称</label>
+                        <div class="form-control-view" id="viewDataSourceName">-</div>
+                        <div class="form-badges" id="viewBadges"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">数据库URL</label>
+                        <div class="form-control-view" id="viewDataSourceUrl">-</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">用户名</label>
+                        <div class="form-control-view" id="viewDataSourceUsername">-</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">驱动类名</label>
+                        <div class="form-control-view" id="viewDataSourceDriver">-</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">状态</label>
+                        <div class="form-control-view" id="viewDataSourceStatus">-</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">连接状态</label>
+                        <div class="form-control-view" id="viewConnectionStatus">
+                            <span class="status-indicator"></span>
+                            <span class="status-text">未知</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">最后测试时间</label>
+                        <div class="form-control-view" id="viewLastTestTime">-</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">测试结果</label>
+                        <div class="form-control-view" id="viewTestResult">-</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">创建时间</label>
+                        <div class="form-control-view" id="viewCreateTime">-</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">更新时间</label>
+                        <div class="form-control-view" id="viewUpdateTime">-</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeViewModal()">关闭</button>
+                <button type="button" class="btn btn-warning" onclick="editFromView()">编辑</button>
+                <button type="button" class="btn btn-primary" onclick="testConnectionFromView()">测试连接</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加/编辑数据源模态框 -->
+    <div id="dataSourceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">新增数据源</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="dataSourceForm">
+                    <input type="hidden" id="dataSourceId">
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="name">数据源名称 *</label>
+                        <input type="text" id="name" class="form-control" required placeholder="例如: mysql-prod">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="url">数据库URL *</label>
+                        <input type="text" id="url" class="form-control" required placeholder="例如: jdbc:mysql://localhost:3306/database">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="username">用户名</label>
+                        <input type="text" id="username" class="form-control" placeholder="数据库用户名">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">密码</label>
+                        <input type="password" id="password" class="form-control" placeholder="数据库密码">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="driverClassName">驱动类名 *</label>
+                        <select id="driverClassName" class="form-control" required>
+                            <option value="">请选择数据库类型</option>
+                            <option value="com.mysql.cj.jdbc.Driver">MySQL</option>
+                            <option value="org.postgresql.Driver">PostgreSQL</option>
+                            <option value="oracle.jdbc.OracleDriver">Oracle</option>
+                            <option value="com.microsoft.sqlserver.jdbc.SQLServerDriver">SQL Server</option>
+                            <option value="org.sqlite.JDBC">SQLite</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" id="isDefault">
+                            <label class="form-label" for="isDefault">设为默认数据源</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveDataSource()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDataSources = [];
+        let currentDataSourceName = '';
+        let editingDataSource = null;
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDataSources();
+            loadCurrentDataSource();
+        });
+
+        // 切换标签页
+        function switchTab(tabName) {
+            // 隐藏所有面板
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // 移除所有按钮的激活状态
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // 显示选中的面板
+            document.getElementById(tabName).classList.add('active');
+            
+            // 激活对应的按钮
+            event.target.classList.add('active');
+        }
+
+        // 加载数据源列表
+        async function loadDataSources() {
+            try {
+                const response = await fetch('/api/datasource/list');
+                currentDataSources = await response.json();
+                renderDataSourceTable();
+            } catch (error) {
+                console.error('加载数据源失败:', error);
+                document.getElementById('datasourceTable').innerHTML = 
+                    '<div class="empty-state"><h3>加载失败</h3><p>请检查网络连接或刷新页面重试</p></div>';
+            }
+        }
+
+        // 加载当前数据源
+        async function loadCurrentDataSource() {
+            try {
+                const response = await fetch('/api/datasource/current');
+                currentDataSourceName = await response.text();
+            } catch (error) {
+                console.error('加载当前数据源失败:', error);
+            }
+        }
+
+        // 渲染数据源表格
+        function renderDataSourceTable() {
+            const container = document.getElementById('datasourceTable');
+            
+            if (currentDataSources.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>暂无数据源</h3>
+                        <p>点击右上角"新增数据源"按钮添加第一个数据源</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const tableHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>数据库URL</th>
+                            <th>用户名</th>
+                            <th>驱动</th>
+                            <th>状态</th>
+                            <th>最后测试</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${currentDataSources.map(ds => `
+                            <tr>
+                                <td>
+                                    ${ds.name === currentDataSourceName ? '<span class="current-indicator"></span>' : ''}
+                                    ${ds.name}
+                                    ${ds.isDefault ? '<span class="status-badge status-default">默认</span>' : ''}
+                                </td>
+                                <td title="${ds.url}">${ds.url.length > 40 ? ds.url.substring(0, 40) + '...' : ds.url}</td>
+                                <td>${ds.username || '-'}</td>
+                                <td>${getDriverDisplayName(ds.driverClassName)}</td>
+                                <td>
+                                    <span class="status-badge ${ds.status === 1 ? 'status-enabled' : 'status-disabled'}">
+                                        ${ds.status === 1 ? '已启用' : '未启用'}
+                                    </span>
+                                </td>
+                                <td>
+                                    ${ds.lastTestTime ? new Date(ds.lastTestTime).toLocaleString() : '-'}
+                                    ${ds.lastTestResult !== null ? 
+                                        `<br><small style="color: ${ds.lastTestResult ? '#22543d' : '#742a2a'}">${ds.lastTestMessage || ''}</small>` 
+                                        : ''}
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-secondary" onclick="viewDataSource(${ds.id})" title="查看">👁</button>
+                                        <button class="btn btn-sm btn-warning" onclick="editDataSource(${ds.id})" title="编辑">✏️</button>
+                                        ${ds.status === 0 ? 
+                                            `<button class="btn btn-sm btn-success" onclick="enableDataSource('${ds.name}')" title="启用">▶️</button>` :
+                                            `<button class="btn btn-sm btn-primary" onclick="switchToDataSource('${ds.name}')" title="切换">🔄</button>`
+                                        }
+                                        <button class="btn btn-sm btn-danger" onclick="deleteDataSource(${ds.id}, '${ds.name}')" title="删除">🗑️</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = tableHTML;
+        }
+
+        // 获取驱动显示名称
+        function getDriverDisplayName(driverClassName) {
+            const driverMap = {
+                'com.mysql.cj.jdbc.Driver': 'MySQL',
+                'org.postgresql.Driver': 'PostgreSQL',
+                'oracle.jdbc.OracleDriver': 'Oracle',
+                'com.microsoft.sqlserver.jdbc.SQLServerDriver': 'SQL Server',
+                'org.sqlite.JDBC': 'SQLite'
+            };
+            return driverMap[driverClassName] || driverClassName;
+        }
+
+        // 显示添加模态框
+        function showAddModal() {
+            editingDataSource = null;
+            document.getElementById('modalTitle').textContent = '新增数据源';
+            document.getElementById('dataSourceForm').reset();
+            document.getElementById('dataSourceId').value = '';
+            document.getElementById('dataSourceModal').style.display = 'block';
+        }
+
+        // 编辑数据源
+        function editDataSource(id) {
+            const dataSource = currentDataSources.find(ds => ds.id === id);
+            if (!dataSource) return;
+
+            editingDataSource = dataSource;
+            document.getElementById('modalTitle').textContent = '编辑数据源';
+            document.getElementById('dataSourceId').value = dataSource.id;
+            document.getElementById('name').value = dataSource.name;
+            document.getElementById('url').value = dataSource.url;
+            document.getElementById('username').value = dataSource.username || '';
+            document.getElementById('password').value = ''; // 出于安全考虑不显示密码
+            document.getElementById('driverClassName').value = dataSource.driverClassName;
+            document.getElementById('isDefault').checked = dataSource.isDefault;
+            
+            document.getElementById('dataSourceModal').style.display = 'block';
+        }
+
+        // 查看数据源
+        function viewDataSource(id) {
+            const dataSource = currentDataSources.find(ds => ds.id === id);
+            if (!dataSource) return;
+
+            showDataSourceDetails(dataSource);
+        }
+
+        // 启用数据源
+        async function enableDataSource(name) {
+            if (!confirm(`确定要启用数据源 "${name}" 吗？`)) return;
+
+            try {
+                const response = await fetch(`/api/datasource/enable/${name}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    alert('数据源启用成功！');
+                    await loadDataSources();
+                    await loadCurrentDataSource();
+                } else {
+                    alert('启用失败，请检查数据源配置。');
+                }
+            } catch (error) {
+                alert('启用失败: ' + error.message);
+            }
+        }
+
+        // 切换到数据源
+        async function switchToDataSource(name) {
+            if (!confirm(`确定要切换到数据源 "${name}" 吗？`)) return;
+
+            try {
+                const response = await fetch(`/api/datasource/switch/${name}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    alert('数据源切换成功！');
+                    await loadCurrentDataSource();
+                    renderDataSourceTable(); // 重新渲染表格以更新当前数据源指示器
+                } else {
+                    alert('切换失败，请检查数据源状态。');
+                }
+            } catch (error) {
+                alert('切换失败: ' + error.message);
+            }
+        }
+
+        // 删除数据源
+        async function deleteDataSource(id, name) {
+            if (!confirm(`确定要删除数据源 "${name}" 吗？此操作不可恢复！`)) return;
+
+            try {
+                const response = await fetch(`/api/datasource/delete/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('数据源删除成功！');
+                    await loadDataSources();
+                    await loadCurrentDataSource();
+                } else {
+                    alert('删除失败，请稍后重试。');
+                }
+            } catch (error) {
+                alert('删除失败: ' + error.message);
+            }
+        }
+
+        // 保存数据源
+        async function saveDataSource() {
+            const form = document.getElementById('dataSourceForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const dataSource = {
+                id: document.getElementById('dataSourceId').value || null,
+                name: document.getElementById('name').value,
+                url: document.getElementById('url').value,
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                driverClassName: document.getElementById('driverClassName').value,
+                isDefault: document.getElementById('isDefault').checked
+            };
+
+            try {
+                const isEdit = editingDataSource !== null;
+                const url = isEdit ? '/api/datasource/update' : '/api/datasource/add';
+                const method = isEdit ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataSource)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.lastTestResult === false) {
+                        alert(`数据源${isEdit ? '更新' : '添加'}成功，但连接测试失败：${result.lastTestMessage}`);
+                    } else {
+                        alert(`数据源${isEdit ? '更新' : '添加'}成功！`);
+                    }
+                    closeModal();
+                    await loadDataSources();
+                    await loadCurrentDataSource();
+                } else {
+                    alert(`${isEdit ? '更新' : '添加'}失败，请检查配置信息。`);
+                }
+            } catch (error) {
+                alert(`${isEdit ? '更新' : '添加'}失败: ` + error.message);
+            }
+        }
+
+        // 显示数据源详情
+        function showDataSourceDetails(dataSource) {
+            // 设置基本信息
+            document.getElementById('viewDataSourceName').textContent = dataSource.name;
+            document.getElementById('viewDataSourceUrl').textContent = dataSource.url;
+            document.getElementById('viewDataSourceUsername').textContent = dataSource.username || '无';
+            document.getElementById('viewDataSourceDriver').textContent = getDriverDisplayName(dataSource.driverClassName);
+
+            // 设置徽章
+            const badgesContainer = document.getElementById('viewBadges');
+            let badgesHtml = '';
+
+            // 当前使用徽章
+            if (dataSource.name === currentDataSourceName) {
+                badgesHtml += '<span class="view-badge current-badge">🎯 当前使用</span>';
+            }
+
+            // 默认数据源徽章
+            if (dataSource.isDefault) {
+                badgesHtml += '<span class="view-badge default-badge">⭐ 默认数据源</span>';
+            }
+
+            badgesContainer.innerHTML = badgesHtml;
+
+            // 设置状态
+            const statusElement = document.getElementById('viewDataSourceStatus');
+            if (dataSource.status === 1) {
+                statusElement.innerHTML = '<span class="view-badge status-badge-enabled">🟢 已启用</span>';
+            } else {
+                statusElement.innerHTML = '<span class="view-badge status-badge-disabled">🔴 未启用</span>';
+            }
+
+            // 设置连接状态
+            const connectionStatus = document.getElementById('viewConnectionStatus');
+            if (dataSource.lastTestResult === true) {
+                connectionStatus.className = 'form-control-view status-success';
+                connectionStatus.innerHTML = '<span class="status-indicator"></span><span class="status-text">连接正常</span>';
+            } else if (dataSource.lastTestResult === false) {
+                connectionStatus.className = 'form-control-view status-error';
+                connectionStatus.innerHTML = '<span class="status-indicator"></span><span class="status-text">连接失败</span>';
+            } else {
+                connectionStatus.className = 'form-control-view status-unknown';
+                connectionStatus.innerHTML = '<span class="status-indicator"></span><span class="status-text">未测试</span>';
+            }
+
+            // 设置时间信息
+            document.getElementById('viewLastTestTime').textContent = 
+                dataSource.lastTestTime ? formatDate(dataSource.lastTestTime) : '从未测试';
+            
+            document.getElementById('viewTestResult').textContent = 
+                dataSource.lastTestMessage || '无测试记录';
+
+            document.getElementById('viewCreateTime').textContent = 
+                dataSource.createTime ? formatDate(dataSource.createTime) : '未知';
+            
+            document.getElementById('viewUpdateTime').textContent = 
+                dataSource.updateTime ? formatDate(dataSource.updateTime) : '未知';
+
+            // 存储当前查看的数据源，供其他操作使用
+            window.currentViewingDataSource = dataSource;
+
+            // 显示模态框
+            document.getElementById('viewDataSourceModal').style.display = 'block';
+        }
+
+        // 关闭查看模态框
+        function closeViewModal() {
+            document.getElementById('viewDataSourceModal').style.display = 'none';
+            window.currentViewingDataSource = null;
+        }
+
+        // 从查看模态框进入编辑
+        function editFromView() {
+            closeViewModal();
+            if (window.currentViewingDataSource) {
+                editDataSource(window.currentViewingDataSource.id);
+            }
+        }
+
+        // 从查看模态框测试连接
+        async function testConnectionFromView() {
+            if (!window.currentViewingDataSource) return;
+
+            const dataSource = window.currentViewingDataSource;
+            
+            try {
+                // 这里可以调用测试连接的API
+                showNotification('正在测试连接...', 'info');
+                
+                // 模拟测试连接（实际应该调用后端API）
+                const response = await fetch('/public/datasource/test');
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('连接测试成功！', 'success');
+                    // 更新显示的连接状态
+                    const connectionStatus = document.getElementById('viewConnectionStatus');
+                    connectionStatus.className = 'form-control-view status-success';
+                    connectionStatus.innerHTML = '<span class="status-indicator"></span><span class="status-text">连接正常</span>';
+                } else {
+                    showNotification('连接测试失败：' + result.error, 'error');
+                    // 更新显示的连接状态
+                    const connectionStatus = document.getElementById('viewConnectionStatus');
+                    connectionStatus.className = 'form-control-view status-error';
+                    connectionStatus.innerHTML = '<span class="status-indicator"></span><span class="status-text">连接失败</span>';
+                }
+            } catch (error) {
+                showNotification('测试连接失败：' + error.message, 'error');
+            }
+        }
+
+        // 格式化日期函数
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return '-';
+            
+            return date.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('dataSourceModal').style.display = 'none';
+            editingDataSource = null;
+        }
+
+        // 显示通知消息
+        function showNotification(message, type = 'info', duration = 3000) {
+            // 移除已存在的通知
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            // 创建新通知
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 500;
+                z-index: 1001;
+                animation: slideIn 0.3s ease;
+                max-width: 400px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            
+            // 设置背景色
+            const colors = {
+                success: '#48bb78',
+                error: '#f56565',
+                warning: '#ed8936',
+                info: '#667eea'
+            };
+            notification.style.background = colors[type] || colors.info;
+            
+            document.body.appendChild(notification);
+
+            // 自动移除
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, duration);
+        }
+
+        // 刷新监控数据
+        function refreshMonitoring() {
+            showNotification('监控功能开发中...', 'info');
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const dataSourceModal = document.getElementById('dataSourceModal');
+            const viewModal = document.getElementById('viewDataSourceModal');
+            
+            if (event.target === dataSourceModal) {
+                closeModal();
+            }
+            
+            if (event.target === viewModal) {
+                closeViewModal();
+            }
+        }
+    </script>
+</body>
+</html>

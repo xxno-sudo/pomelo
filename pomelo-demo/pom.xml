@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.cuckoo.pomelo</groupId>
+        <artifactId>pomelo-framework</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>pomelo-demo</artifactId>
+    <name>pomelo-demo</name>
+
+    <dependencies>
+        <!-- 安全模块依赖 -->
+        <dependency>
+            <groupId>com.cuckoo.pomelo</groupId>
+            <artifactId>pomelo-common-security</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- Web支持 -->
+        <dependency>
+            <groupId>com.cuckoo.pomelo</groupId>
+            <artifactId>pomelo-common-core</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 数据访问层支持 -->
+        <dependency>
+            <groupId>com.cuckoo.pomelo</groupId>
+            <artifactId>pomelo-common-dao</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 测试依赖 -->
+        <dependency>
+            <groupId>com.cuckoo.pomelo</groupId>
+            <artifactId>pomelo-common-junit</artifactId>
+            <version>${revision}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+    </dependencies>
+</project>
